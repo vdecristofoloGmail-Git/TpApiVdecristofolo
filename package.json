@@ -1,0 +1,25 @@
+{
+  "name": "tpapivdecristofolo",
+  "version": "1.0.0",
+  "description": "Tps del curso de API",
+  "homepage": "https://github.com/vdecristofoloGmail-Git/TpApiVdecristofolo#readme",
+  "bugs": {
+    "url": "https://github.com/vdecristofoloGmail-Git/TpApiVdecristofolo/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vdecristofoloGmail-Git/TpApiVdecristofolo.git"
+  },
+  "license": "ISC",
+  "author": "Valeria De Cristofolo",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}
