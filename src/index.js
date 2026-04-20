@@ -7,14 +7,19 @@ const express = require('express');//importa express
 const globalConstants = require('./const/globalConstants');
 
 
-//
+//El router
 const routerConfig= require('./routes/index.routes');
+
+//el que reemplaza a la console.log
+const logger=require('morgan');
+
 
 
 const configuracionApi = (app)=> {
   app.use(express.json()); //permite que express entienda json , esto habilita a despues usar el body
   app.use(express.urlencoded({ extended : true })); //permite que express entienda  formularios enviuados por post
-  
+  app.use(logger('dev')); //solo para desarrollo
+
 }
 const configuracionRouter = (app)=> {
   app.use('/api/', routerConfig.rutas_init());

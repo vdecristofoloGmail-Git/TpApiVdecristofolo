@@ -5,7 +5,7 @@ module.exports ={
         try{
             console.log('Lista todos los Oficiales')
             res.json({
-                message: "Lista a todos los Oficales"
+                message: "Lista a todos los Oficiales"
             }
             )
         }
