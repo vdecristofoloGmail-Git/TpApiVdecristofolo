@@ -1,35 +1,58 @@
-//Tendra la funcionalidad del endpoimt de Oficial
+//Tendra la funcionalidad del endpoimt de cliente
+const models =require('../database/models/index')
+
 
 module.exports ={
     listar: async(req,res) => {
-        try{
-            console.log('Lista todos los Oficiales')
+     try {
+            const oficiales = await models.oficial.findAll()
+
             res.json({
-                message: "Lista a todos los Oficiales"
-            }
-            )
-        }
-        catch (err){
-            console.log(err)
+                success: true,
+                data: {
+                    oficiales: oficiales
+                }
+            })
+
+        } catch (err) {
+            return next(err)
         }
     },
 
-    crear: async(req,res) => {
+     crear: async (req, res) => {
+        try {
+            const officeContact = await models.oficial.create(req.body)
 
+            res.json({
+                success: true,
+                data: {
+                    id: officeContact.id
+                }
+            })
+
+        } catch (err) {
+            return next(err)
+        }
     },
 
-    listarInfo: async(req,res) => {
-        try{
-            console.log('Lista al Oficial: '+req.params.idOficial)
-            res.json({
-                message: "Lista al Oficial :"+req.params.idOficial
-            }
-            )
-        }
-        catch (err){
-            console.log(err)
-        }
+   listarInfo: async (req, res, next) => {
+        try {
+            const officeContact = await models.oficial.findOne({
+                where: {
+                    id: req.params.idOficial
+                }
+            })            
 
+            res.json({
+                success: true,
+                data: {
+                    oficial: officeContact
+                }
+            })
+
+        } catch (err) {
+            return next(err)
+        }
     },
     
     prueba: async(req,res) => {

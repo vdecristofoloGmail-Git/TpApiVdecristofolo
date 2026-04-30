@@ -1,33 +1,63 @@
-//Tendra la funcionalidad del endpoimt de Producto
+//Tendra la funcionalidad del endpoimt de cliente
+const models =require('../database/models/index')
+
 
 module.exports ={
     listar: async(req,res) => {
-        try{
-            console.log('Lista a todos los Productos')
+     try {
+            const productos = await models.producto.findAll()
+
             res.json({
-                message: "Lista a todos los Productos"
-            }
-            )
-        }
-        catch (err){
-            console.log(err)
+                success: true,
+                data: {
+                    productos: productos
+                }
+            })
+
+        } catch (err) {
+            return next(err)
         }
     },
 
-    crear: async(req,res) => {
+     crear: async (req, res) => {
+        try {
+            const product = await models.producto.create(req.body)
 
+            res.json({
+                success: true,
+                data: {
+                    id: product.id
+                }
+            })
+
+        } catch (err) {
+            return next(err)
+        }
     },
 
-    listarInfo: async(req,res) => {
-    try{
-            console.log('Lista al Producto: '+req.params.idProducto)
+   listarInfo: async (req, res, next) => {
+        try {
+            const product = await models.producto.findOne({
+                where: {
+                    id: req.params.idProducto
+                },
+                include:[{
+                                    model: models.cliente_producto,
+                                    include:[{
+                                        model: models.cliente
+                                    }]
+                                }]
+            })            
+
             res.json({
-                message: "Lista al Producto :"+req.params.idProducto
-            }
-            )
-        }
-        catch (err){
-            console.log(err)
+                success: true,
+                data: {
+                    producto: product
+                }
+            })
+
+        } catch (err) {
+            return next(err)
         }
     },
 

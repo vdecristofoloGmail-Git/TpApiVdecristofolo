@@ -13,12 +13,14 @@ const routerConfig= require('./routes/index.routes');
 //el que reemplaza a la console.log
 const logger=require('morgan');
 
-
+//CORS
+var cors=require('cors');
 
 const configuracionApi = (app)=> {
   app.use(express.json()); //permite que express entienda json , esto habilita a despues usar el body
   app.use(express.urlencoded({ extended : true })); //permite que express entienda  formularios enviuados por post
   app.use(logger('dev')); //solo para desarrollo
+  app.use(cors()); // CORS para permisos
 
 }
 const configuracionRouter = (app)=> {
