@@ -42,6 +42,8 @@ module.exports ={
 
    listarInfo: async (req, res, next) => {
         try {
+                  
+
             const client = await models.cliente.findOne({
                 where: {
                     id: req.params.idCliente
@@ -49,15 +51,15 @@ module.exports ={
                 
                 include:[{
                     model: models.oficial
-                }] ,
-                include:[{
+                } ,
+                {
                     model: models.cliente_producto,
                     include:[{
                         model: models.producto
                     }]
                 }]
 
-            })            
+            })
 
             res.json({
                 success: true,
