@@ -1,6 +1,6 @@
 //Tendra la funcionalidad del endpoimt de cliente
 const models =require('../database/models/index')
-
+const errors = require("../const/errors")
 
 module.exports ={
     listar: async(req,res) => {
@@ -42,6 +42,8 @@ module.exports ={
                     id: req.params.idOficial
                 }
             })            
+
+            if(!officeContact) return next(errors.OficialInexistente)
 
             res.json({
                 success: true,

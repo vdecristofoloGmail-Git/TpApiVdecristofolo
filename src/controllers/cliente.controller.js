@@ -1,5 +1,6 @@
 //Tendra la funcionalidad del endpoimt de cliente
 const models =require('../database/models/index')
+const errors = require("../const/errors")
 
 
 module.exports ={
@@ -60,8 +61,10 @@ module.exports ={
                 }]
 
             })
-
-            res.json({
+            
+            if(!client) return next(errors.ClienteInexistente)
+            
+                res.json({
                 success: true,
                 data: {
                     cliente: client 

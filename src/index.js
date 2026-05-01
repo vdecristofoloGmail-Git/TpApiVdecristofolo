@@ -16,6 +16,12 @@ const logger=require('morgan');
 //CORS
 var cors=require('cors');
 
+
+//Manejo de errores
+let errorHandler = require('./middlewares/error')
+let createError = require('http-errors') // se utiliza para crear un error personalizado
+
+
 const configuracionApi = (app)=> {
   app.use(express.json()); //permite que express entienda json , esto habilita a despues usar el body
   app.use(express.urlencoded({ extended : true })); //permite que express entienda  formularios enviuados por post
@@ -26,7 +32,14 @@ const configuracionApi = (app)=> {
 const configuracionRouter = (app)=> {
   app.use('/api/', routerConfig.rutas_init());
   app.use(express.urlencoded({ extended : true })); //permite que express entienda  formularios enviuados por post
-  
+ 
+  //Aggregue para manejo de errores
+    app.use(function (req, res, next) {
+    next(createError(404)) // si no se encuentra la ruta, se envia un error 404
+  })
+  app.use(errorHandler) // configurar el middleware de manejo de errores
+  //Fin de manejo de errores
+
 }
 
 
