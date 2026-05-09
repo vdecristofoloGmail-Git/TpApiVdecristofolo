@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     createdAt: { // fecha de creacion
       type: DataTypes.DATE, // tipo de dato
       field: 'created_at', // nombre de la columna
@@ -45,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
     // aca se relacionan las tablas de la base de datos  
     Cliente.belongsTo(models.oficial)
     Cliente.hasMany(models.cliente_producto)
+    Cliente.hasMany(models.archivo_cliente)
   }
 
   return Cliente

@@ -1,6 +1,7 @@
 'use strict';
 
 const models=require('../models/index')
+const bcrypt=require('bcryptjs')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -15,7 +16,8 @@ module.exports = {
                     apellido:"Molinero",
                     email: "paz@gmail.com",
                     oficialId: 1,
-                    productoId: 1
+                    productoId: 1,
+                    password: bcrypt.hashSync('passwordPaz',10)
                 }
             }),
              models.cliente.findOrCreate({
@@ -27,7 +29,8 @@ module.exports = {
                     apellido:"Miranda",
                     email: "natiMiranda@gmail.com",
                     oficialId: 2,
-                    productoId: 2
+                    productoId: 2,
+                    password: bcrypt.hashSync('passwordNati',10)
                 }
             })
         ])

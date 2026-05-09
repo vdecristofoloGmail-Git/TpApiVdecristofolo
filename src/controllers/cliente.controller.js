@@ -6,7 +6,9 @@ const errors = require("../const/errors")
 module.exports ={
     listar: async(req,res) => {
      try {
-            const clientes = await models.cliente.findAll()
+            const clientes = await models.cliente.findAll({
+                 attributes: { exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt'] } // 'password' no aparecerá
+            })
 
             res.json({
                 success: true,
@@ -50,6 +52,11 @@ module.exports ={
                     id: req.params.idCliente
                 },
                 
+                attributes: {
+                     exclude: ['password', 'createdAt', 'updatedAt', 'deletedAt']
+                } // 'password' no aparecerá
+                ,
+                
                 include:[{
                     model: models.oficial
                 } ,
@@ -90,4 +97,75 @@ module.exports ={
         }
 
     },
+
+    subirArchivo: async (req, res, next) => {
+        try {
+
+            //verifico si existe el usuario
+            const cliente = await models.cliente.findOne({
+                where: {
+                    id: req.body.clienteId
+                }
+            })
+            if (!cliente) return next(errors.ClienteInexistente)
+
+
+            // busco el archivo del usuario
+            const ar = await models.archivo_cliente.findOne({
+                where: {
+                    clienteId: req.body.clienteId,
+                    nombre: req.body.nombre
+                }
+            })
+            if (!ar) { // si el archivo no existe, lo creo
+
+                const archivo = await models.archivo_cliente.create({
+                    nombre: req.body.nombre, //nombre para identificar el archivo por si un usuario tiene varios archivos
+                    file: req.file ? req.file.filename : null, //en el campo file se guarda el nombre del archivo
+                    original_name: req.file ? req.file.originalname : null, //en el campo original_name se guarda el nombre original del archivo
+                    clienteId: req.body.clienteId
+                })
+
+            }
+
+
+            res.json({
+                success: true,
+                data: {
+                    message: "archivo cargado OK"
+                }
+            })
+
+        } catch (err) {
+            return next(err)
+        }
+    },
+
+    descargarArchivo: async (req, res, next) => {
+        try {
+
+            // verifico si existe el usuario
+            const cliente = await models.cliente.findOne({
+                where: {
+                    id: req.body.clienteId
+                }
+            })
+            if (!cliente) return next(errors.ClienteInexistente)
+
+            // verifico si existe el archivo
+            const archivo = await models.archivo_cliente.findOne({
+                where: {
+                    clienteId: req.body.clienteId,
+                    nombre: req.body.nombre
+                }
+            })
+            if (!archivo) return next(errors.ArchivoInexistente)
+
+
+            res.download('uploads/archivos-clientes/' + archivo.file, archivo.original_name) //descarga el archivo
+
+        } catch (err) {
+            return next(err)
+        }
+    }
 }

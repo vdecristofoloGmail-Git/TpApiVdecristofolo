@@ -19,7 +19,7 @@ module.exports ={
         }
     },
 
-     crear: async (req, res) => {
+     crear: async (req, res,next) => {
         try {
             const product = await models.producto.create(req.body)
 
